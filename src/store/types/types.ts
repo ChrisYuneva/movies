@@ -1,3 +1,10 @@
+export interface MovieResponse {
+    entries: number;
+    next: string;
+    page: number;
+    results: Movie[]
+}
+
 export interface Movie {
     id: string;
     _id: string;
@@ -55,7 +62,7 @@ export interface ReleaseDate {
 }
 
 export interface initialTypeMovies {
-    movies: Movie[];
+    movies: MovieResponse;
     isLoading: boolean;
     errorMessage: string;
 }
