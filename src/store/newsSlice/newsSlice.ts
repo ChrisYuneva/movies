@@ -1,27 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import {initialTypeMovies, Movie, MovieResponse} from '../types/types';
+import { News, initialTypeNews } from '../types/types';
 
-const initialState: initialTypeMovies = {
-    movies: {
-        entries: 0,
-        next: '',
-        page: 0,
-        results: []
-    },
+const initialState: initialTypeNews = {
+    news: [],
     isLoading: false,
     errorMessage: ''
 };
 
-const moviesSlice = createSlice({
-    name: 'movies',
+const newsSlice = createSlice({
+    name: 'news',
     initialState,
     reducers: {
         loading(state) {
             state.isLoading = true;
         },
-        get(state, action: PayloadAction<MovieResponse>) {
-            state.movies = action.payload;
+        get(state, action: PayloadAction<News[]>) {
+            state.news = action.payload;
             state.isLoading = false;
         },
         error(state, action: PayloadAction<string>) {
@@ -31,4 +26,4 @@ const moviesSlice = createSlice({
     }
 });
 
-export default moviesSlice;
+export default newsSlice;
