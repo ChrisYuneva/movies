@@ -1,5 +1,6 @@
 import { Game, News } from '../store/types/types';
 import { API_PATH } from './consts/consts';
+import { FilterParams, FilterTagParams } from '../components/types/types';
 
 type Method = 'GET' | 'POST';
 
@@ -29,19 +30,24 @@ export function getAllNews() {
     return api<News[], {}>(`${API_PATH}/latestnews`);
 }
 
-// export function getMovies(query = '') {
-//     return api<Posts[], {}>(`${API_PATH}${query}`);
-// }
-//
-// export function addPost() {
-//     return api<Posts, Posts>(`${API_PATH}`, "POST", {'Content-type': 'application/json; charset=UTF-8',}, {
-//         title: 'foo',
-//         body: 'bar',
-//         userId: 1,
-//     })
-// }
-//
-// export function testPost(body: TestPost) {
-//     console.log(body)
-//     return api<TestPost, TestPost>(`${TEST_PATH}/user`, "POST", {}, {email: body.email, password: body.password})
-// }
+function toQueryString<T>(obj: T) {
+    let queryString = [];
+    for (let i in obj) {
+        if (obj[i] !== '') {
+            queryString.push(`${i}=${obj[i]}`);
+        }
+    }
+    return `?${queryString.join('&')}`;
+}
+
+export function getGamesByFilter(queryParams: FilterParams) {
+    const params =
+        queryParams.category.split('.').length > 1
+            ? {
+                  platform: queryParams.platform,
+                  tag: queryParams.category,
+                  'sort-by': queryParams['sort-by']
+              }
+            : queryParams;
+    return api<Game[], {}>(`${API_PATH}/games${toQueryString(params)}`);
+}
